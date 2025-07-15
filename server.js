@@ -1,12 +1,15 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import Contact from './models/Contact.js';
+
+// ✅ Only define Contact here once
+import Contact from './models/Contact.js'; // <-- this should exist and export the model
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ✅ Connect to MongoDB Atlas
 mongoose.connect('mongodb+srv://frajjaselin:MongoDBAtlas@cluster0.mzzr186.mongodb.net/portfolioDB?retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -14,28 +17,19 @@ mongoose.connect('mongodb+srv://frajjaselin:MongoDBAtlas@cluster0.mzzr186.mongod
 .then(() => console.log("MongoDB Atlas connected"))
 .catch(err => console.error(err));
 
-const contactSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  message: String,
-  createdAt: { type: Date, default: Date.now }
-});
-
-const Contact = mongoose.model('Contact', contactSchema);
-
+// ✅ Define your route
 app.post('/api/contact', async (req, res) => {
   try {
-    console.log('📥 Incoming contact:', req.body); // Log the form data
-
+    console.log('📥 Incoming contact:', req.body);
     const newContact = new Contact(req.body);
     await newContact.save();
-
     res.status(201).json({ message: 'Message saved!' });
   } catch (error) {
-    console.error('❌ Error saving contact:', error); // Log the actual error
+    console.error('❌ Error saving contact:', error);
     res.status(500).json({ error: 'Failed to save message.' });
   }
+});
 
-
-const PORT = 5000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+// ✅ Start the server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
