@@ -6,11 +6,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/portfolioDB', {
+mongoose.connect('mongodb+srv://frajjaselin:MongoDBAtlas@cluster0.mzzr186.mongodb.net/portfolioDB?retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}).then(() => console.log("MongoDB connected"))
-  .catch(err => console.error(err));
+})
+.then(() => console.log("MongoDB Atlas connected"))
+.catch(err => console.error(err));
 
 const contactSchema = new mongoose.Schema({
   name: String,
