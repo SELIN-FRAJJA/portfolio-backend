@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import Contact from './models/Contact.js';
 
 const app = express();
 app.use(cors());
@@ -24,13 +25,17 @@ const Contact = mongoose.model('Contact', contactSchema);
 
 app.post('/api/contact', async (req, res) => {
   try {
+    console.log('📥 Incoming contact:', req.body); // Log the form data
+
     const newContact = new Contact(req.body);
     await newContact.save();
+
     res.status(201).json({ message: 'Message saved!' });
   } catch (error) {
+    console.error('❌ Error saving contact:', error); // Log the actual error
     res.status(500).json({ error: 'Failed to save message.' });
   }
-});
+
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
