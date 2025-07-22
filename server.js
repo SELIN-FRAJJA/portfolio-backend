@@ -19,6 +19,10 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log("MongoDB Atlas connected"))
 .catch(err => console.error(err));
 
+app.get('/', (req, res) => {
+  res.send('Backend is working ✅');
+});
+
 // ✅ Define your route
 app.post('/api/contact', async (req, res) => {
   try {
