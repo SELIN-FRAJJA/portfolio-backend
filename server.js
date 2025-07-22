@@ -1,6 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // ✅ Only define Contact here once
 import Contact from './models/Contact.js'; // <-- this should exist and export the model
@@ -10,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // ✅ Connect to MongoDB Atlas
-mongoose.connect('mongodb+srv://frajjaselin:MongoDBAtlas@cluster0.mzzr186.mongodb.net/portfolioDB?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
